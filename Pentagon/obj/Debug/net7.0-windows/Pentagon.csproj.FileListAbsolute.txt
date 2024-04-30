@@ -1,0 +1,4 @@
+L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\MainWindow.g.cs
+L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\App.g.cs
+L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\Pentagon_MarkupCompile.cache
+L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\Pentagon_MarkupCompile.lref
