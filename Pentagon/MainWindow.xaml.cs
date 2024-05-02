@@ -24,12 +24,7 @@ namespace Pentagon
         {
             InitializeComponent();
         }
-
-        private void MainWindow_OnKeyDown_(object sender, KeyEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private void Window_OnKeyDown(object sender, KeyEventArgs e)
         {
             throw new NotImplementedException();
