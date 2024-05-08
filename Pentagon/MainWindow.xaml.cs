@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
 
 namespace Pentagon
 {
@@ -22,42 +22,49 @@ namespace Pentagon
     {
         private readonly ImageSource[] tileImages = new ImageSource[]
         {
-            new BitmapImage(new Uri("Assets/TileBlue.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileCyan.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileGray.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileGreen.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileLightBlue.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileMagenta.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileMinty.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileOrange.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TilePink.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TilePurple.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileRed.png", UriKind.Relative)),
-            new BitmapImage(new Uri("Assets/TileYellow.png", UriKind.Relative)),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileBlue.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileCyan.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileGray.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileGreen.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileLightBlue.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileMagenta.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileMinty.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileOrange.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TilePink.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TilePurple.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileRed.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileYellow.png"))),
+            new BitmapImage(new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/TileEmpty.png"))),
         };
 
-        private GameProcess gameProcess = new GameProcess();
-
         private readonly Image[,] imageControls;
+        private GameProcess gameProcess = new GameProcess();
+        
+        public MainWindow()
+        {
+            InitializeComponent();
+            imageControls = SetupGameCanvas(gameProcess.Board);
+        }
 
         private Image[,] SetupGameCanvas(Grid grid)
         {
+            Image[,] imageControls = new Image[grid.Rows, grid.Columns];
             int tileSize = 25;
-
+            
             for (int r = 0; r < grid.Rows; r++)
             {
                 for (int c = 0; c < grid.Columns; c++)
                 {
-                    Image image = new Image()
+                    Image imageControl = new Image()
                     {
                         Width = tileSize,
                         Height = tileSize
                     };
 
-                    Canvas.SetTop(image, r * tileSize);
-                    Canvas.SetLeft(image, c * tileSize);
-                    GameBoard.Children.Add(image);
-                    imageControls[r, c] = image;
+                    Canvas.SetTop(imageControl, r * tileSize);
+                    Canvas.SetLeft(imageControl, c * tileSize);
+                    GameBoard.Children.Add(imageControl);
+                    imageControls[r, c] = imageControl;
                 }
             }
 
@@ -110,22 +117,28 @@ namespace Pentagon
                         case 'Z':
                             imageControls[r, c].Source = tileImages[11];
                             break;
-                        default:
+                        case '0':
+                            imageControls[r, c].Source = tileImages[12];
                             break;
                     }
                 }
             }
         }
 
-        public MainWindow()
+       private void Draw(GameProcess gameProcess)
         {
-            InitializeComponent();
-            imageControls = SetupGameCanvas(gameProcess.Board);
+            DrawBoard(gameProcess.Board);
         }
+        
         
         private void Window_OnKeyDown(object sender, KeyEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void Canvas_Loaded(object sender, RoutedEventArgs e)
+        {
+            Draw(gameProcess);
         }
     }
 }

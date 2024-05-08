@@ -3,12 +3,15 @@
 public class GameProcess
 {
     public Grid Board { get; }
+
+    public TilesBoard TilesBoard { get; }
     
     public Pentomino SelectedPentomino { get; }
     
     public GameProcess()
     {
         Board = new Grid(12, 12);
+        TilesBoard = new TilesBoard(12 ,5);
         Board.SetRandomGrid();
     }
 
