@@ -39,5 +39,9 @@ public class VPentomino : Pentomino
     };
     public override char ID => 'V';
     
-    protected override Position[][] Tiles => tiles;
+    public override Position[][] Tiles => tiles;
+    public VPentomino(int startingRotationState = 0) : base(startingRotationState)
+    {
+        
+    }
 }

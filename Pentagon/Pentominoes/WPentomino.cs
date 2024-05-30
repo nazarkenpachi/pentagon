@@ -39,5 +39,9 @@ public class WPentomino : Pentomino
     };
     public override char ID => 'W';
     
-    protected override Position[][] Tiles => tiles;
+    public override Position[][] Tiles => tiles;
+    public WPentomino(int startingRotationState = 0) : base(startingRotationState)
+    {
+        
+    }
 }

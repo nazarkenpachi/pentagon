@@ -15,5 +15,9 @@ public class XPentomino : Pentomino
     };
     public override char ID => 'X';
     
-    protected override Position[][] Tiles => tiles;
+    public override Position[][] Tiles => tiles;
+    public XPentomino(int startingRotationState = 0) : base(startingRotationState)
+    {
+        
+    }
 }

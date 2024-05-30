@@ -11,4 +11,12 @@
       <Folder Include="Assets\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="PentominoControl.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
 </Project>

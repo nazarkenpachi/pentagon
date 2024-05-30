@@ -18,3 +18,5 @@ L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\refint\Pentagon.dll
 L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\Pentagon.pdb
 L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\Pentagon.genruntimeconfig.cache
 L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\ref\Pentagon.dll
+L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\PentominoControl.g.cs
+L:\Projs\Pentagon\Pentagon\obj\Debug\net7.0-windows\PentominoControl.baml

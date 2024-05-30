@@ -3,53 +3,156 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pentominoes="clr-namespace:Pentagon.Pentominoes"
         xmlns:local="clr-namespace:Pentagon"
         mc:Ignorable="d"
         Title="Pentagon" Height="450" Width="800"
-        MinWidth="600" MinHeight="600"
+        MinWidth="800" MinHeight="600"
         Foreground="White"
-        FontSize="28"
-        KeyDown="Window_OnKeyDown">
-    <Grid>
+        FontSize="28">
+    <Window.Resources>
+        <ImageBrush x:Key="CanvasBackground" ImageSource="L:\Projs\Pentagon\Pentagon\bin\Debug\net7.0-windows\Assets\background2.png"/>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".2*"/>
-            <ColumnDefinition Width=".6*"/>
-            <ColumnDefinition Width=".3*"/>
-        </Grid.ColumnDefinitions>
+        <SolidColorBrush x:Key="ButtonMouseOverColor" Color="#D2CED6"/>
+        <SolidColorBrush x:Key="ButtonPressedColor" Color="#A59DAC"/>
+        <SolidColorBrush x:Key="PrimaryDarkTextColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ButtonBorderBrushColor" Color="#FFFFFF"/>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryDarkTextColor}"/>
+            <Setter Property="FontWeight" Value="500"/>
+            <Setter Property="Padding" Value="12 2, 12, 5"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="MaxHeight" Value="50"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="btnBorder" CornerRadius="5"
+                            Background="{TemplateBinding Background}"
+                            Width="{TemplateBinding Width}"
+                            MaxHeight="{TemplateBinding MaxHeight}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True"
+                            Padding="{TemplateBinding Padding}">
+                            <ContentPresenter x:Name="ContentPresenter" Focusable="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="0"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background"
+                                    Value="{DynamicResource ButtonMouseOverColor}"/>
+                                <Setter TargetName="btnBorder" Property="BorderBrush"
+                                    Value="{DynamicResource PrimaryBlueColor}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background"
+                                    Value="{DynamicResource ButtonPressedColor}"/>
+                                <Setter TargetName="btnBorder" Property="BorderBrush"
+                                    Value="{DynamicResource PrimaryBlueColor}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <Grid.Background>
-            <ImageBrush ImageSource="L:\Projs\Pentagon\Pentagon\bin\Debug\net7.0-windows\Assets\background.jpg"/>
-        </Grid.Background>
+    </Window.Resources>
 
-        <Viewbox Grid.Row="1"
-                 Grid.Column="1"
-                 >
-            <Canvas x:Name="GameBoard"
-                    Background="Azure"
-                    Width="300"
-                    Height="300"
-                    Margin="0,70,0,70"
-                    Loaded="Canvas_Loaded"/>
-        </Viewbox>
+    <Canvas Name="MainCanvas" Background= "{StaticResource CanvasBackground}">
+        <Grid Width="{Binding ActualWidth, ElementName=MainCanvas}"
+              Height="{Binding ActualHeight, ElementName=MainCanvas}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".2*"/>
+                <ColumnDefinition Width=".6*"/>
+                <ColumnDefinition Width=".2*"/>
+            </Grid.ColumnDefinitions>
 
-        <Viewbox Grid.Row="1"
-                 Grid.Column="2"
-                 HorizontalAlignment="Right">
-            <Canvas x:Name="FigureBoard"
-                    Background="Azure"
-                    Width="125"
-                    Height="300"
-                    Margin="0,70,0,70"/>
-        </Viewbox>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Button Name="btnRestart" Width="50" Height="50" HorizontalAlignment="Left" Margin="5"></Button>
-        <Button Name="btnMenu" Width="50" Height="50" HorizontalAlignment="center" Margin="50, 5, 5, 5"></Button>
 
-    </Grid>
+            <Viewbox Grid.Row="1"
+                     Grid.Column="1"
+                     Panel.ZIndex="1">
+                <Canvas x:Name="GameBoard"
+                        Background="Azure"
+                        Width="300"
+                        Height="300"
+                        Margin="0,70,0,70"
+                        Loaded="Canvas_Loaded"
+                        />
+            </Viewbox>
+            <Grid x:Name="GameOverMenu"
+                  Background="#CC000000"
+                  Grid.RowSpan="2"
+                  Grid.ColumnSpan="3"
+                  Visibility="Hidden"
+                  ZIndex="3">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <TextBlock Text = "Game Over!"
+                               FontSize="48"
+                               TextAlignment="Center"/>
+                    <Button Content="New Game"
+                            Style="{DynamicResource ButtonStyle}"
+                            Margin="0,20,0,20"
+                            Padding="5"
+                            Click="BtnNew_OnClick_Click"/>
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="WaitingMenu"
+                  Background="#CC000000"
+                  Grid.RowSpan="2"
+                  Grid.ColumnSpan="3"
+                  Visibility="Hidden"
+                  ZIndex="4">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <TextBlock Text = "Please wait a bit . . ."
+                               FontSize="48"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+            <Button Grid.Row="1" 
+                    Grid.Column="1" 
+                    Grid.ColumnSpan="2"
+                    Content="Restart" 
+                    Style="{DynamicResource ButtonStyle}" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Margin="0,31,20,0" Height="49" Width="160" 
+                    Click="BtnRestart_Click" />
+            <Button Grid.Row="1" 
+                    Grid.Column="1" 
+                    Grid.ColumnSpan="2"
+                    Name="BtnNew" 
+                    Content="New Game" 
+                    Style="{DynamicResource ButtonStyle}" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Margin="0,90,20,0" Height="50" Width="160" 
+                    Click="BtnNew_OnClick_Click"/>
+            <Button Grid.Row="1" 
+                    Grid.Column="1" 
+                    Grid.ColumnSpan="2"
+                    Name="BtnAuto" 
+                    Content="Auto" 
+                    Style="{DynamicResource ButtonStyle}" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Margin="0,150,20,0" Height="50" Width="160" 
+                    Click="BtnAuto_Click"/>
+        </Grid>
+    </Canvas>
 </Window>

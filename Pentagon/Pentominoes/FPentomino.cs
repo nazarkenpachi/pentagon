@@ -37,8 +37,15 @@ public class FPentomino : Pentomino
             new(2, 1)
         }
     };
+    
+    
 
     public override char ID => 'F';
 
-    protected override Position[][] Tiles => tiles;
+    public override Position[][] Tiles => tiles;
+
+    public FPentomino(int startingRotationState = 0) : base(startingRotationState)
+    {
+        
+    }
 }
