@@ -40,7 +40,7 @@ public class Board
         return _grid[r, c] == 'B';
     }
 
-    private void SetRandomGrid()
+    public void SetRandomGrid()
     {
         for (int r = 0; r < Rows; r++)
         {

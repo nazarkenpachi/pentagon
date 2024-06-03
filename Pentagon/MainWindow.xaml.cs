@@ -59,7 +59,6 @@ namespace Pentagon
             _pentominoes.Add(new YPentomino());
             _pentominoes.Add(new ZPentomino());
             
-            _autoSolver = new AutoSolver(_pentominoes, gameProcess, this);
         }
         
 
@@ -244,11 +243,11 @@ namespace Pentagon
 
         private async void BtnAuto_Click(object sender, RoutedEventArgs e)
         {   
-            WaitingMenu.Visibility = Visibility.Visible;
-            ClearBoard();
+            /*WaitingMenu.Visibility = Visibility.Visible;*/
+            _autoSolver = new AutoSolver(_pentominoes, gameProcess, this);
+            SetupGame(gameProcess);
             if (await _autoSolver.SolvePentomino())
             {
-                Console.WriteLine("called");
                 if (PentominoControls.Count != 0)
                 {
                     for (int i = PentominoControls.Count - 1; i >= 0; i--)
@@ -262,15 +261,14 @@ namespace Pentagon
                         }
                     }
                 }
-                DrawBoard(gameProcess.Board);
                 gameProcess.GameOver = true;
                 UpdateGameState();
             }
             else
             {
-                MessageBox.Show("No solution found.");
+                MessageBox.Show("The solution is too complex");
             }
-            WaitingMenu.Visibility = Visibility.Hidden;
+            /*WaitingMenu.Visibility = Visibility.Hidden;*/
         }
 
         public void BtnNew_OnClick_Click(object sender, RoutedEventArgs e)
@@ -278,8 +276,7 @@ namespace Pentagon
             if (GameOverMenu.Visibility == Visibility.Visible)
                 GameOverMenu.Visibility = Visibility.Hidden;
             
-            ClearBoard();
-            gameProcess = new GameProcess();
+            gameProcess.CreateNewBoard();
             SetupGame(gameProcess);
         }
         public void UpdateGameState()

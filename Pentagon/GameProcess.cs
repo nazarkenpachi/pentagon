@@ -104,4 +104,10 @@ public class GameProcess
             return SelectedPentomino.TilePosition().Select(p => new Position(p.Row + row, p.Column + column)).ToList();
         return new List<Position>();
     }
+
+    public void CreateNewBoard()
+    {
+        GameOver = false;
+        Board.SetRandomGrid();
+    }
 }
