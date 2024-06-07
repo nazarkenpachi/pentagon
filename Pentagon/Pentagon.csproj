@@ -19,4 +19,9 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="background2.png" />
+      <Resource Include="background2.png" />
+    </ItemGroup>
+
 </Project>

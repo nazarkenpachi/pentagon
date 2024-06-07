@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -45,7 +46,7 @@ namespace Pentagon
             InitializeComponent();
             gameProcess = new GameProcess();
             rectControls = SetupGameCanvas(gameProcess.Board);
-            
+
             _pentominoes.Add(new FPentomino());
             _pentominoes.Add(new IPentomino());
             _pentominoes.Add(new LPentomino());
@@ -58,9 +59,9 @@ namespace Pentagon
             _pentominoes.Add(new XPentomino());
             _pentominoes.Add(new YPentomino());
             _pentominoes.Add(new ZPentomino());
-            
+
         }
-        
+
 
         public Rectangle[,] SetupGameCanvas(Board board)
         {
@@ -136,7 +137,7 @@ namespace Pentagon
                             break;
                         case '0':
                             rectControls[r, c].Fill = tileBrushes[12];
-                            break; 
+                            break;
                         case 'B':
                             rectControls[r, c].Fill = tileBrushes[13];
                             break;
@@ -146,7 +147,7 @@ namespace Pentagon
                 }
             }
         }
-        
+
         private void BtnRestart_Click(object sender, RoutedEventArgs e)
         {
             SetupGame(gameProcess);
@@ -161,13 +162,14 @@ namespace Pentagon
                 {
                     var control = PentominoControls[i];
                     PentominoControls.RemoveAt(i);
-            
+
                     if (MainCanvas.Children.Contains(control))
                     {
                         MainCanvas.Children.Remove(control);
                     }
                 }
             }
+
             AddPentominoControls();
             DrawBoard(gameProcess.Board);
         }
@@ -223,7 +225,7 @@ namespace Pentagon
             Canvas.SetLeft(PentominoControls[11], 50);
             MainCanvas.Children.Add(PentominoControls[11]);
         }
-        
+
         public void ClearBoard()
         {
             for (int r = 0; r < gameProcess.Board.Rows; r++)
@@ -241,8 +243,10 @@ namespace Pentagon
             SetupGame(gameProcess);
         }
 
+
+
         private async void BtnAuto_Click(object sender, RoutedEventArgs e)
-        {   
+        {
             /*WaitingMenu.Visibility = Visibility.Visible;*/
             _autoSolver = new AutoSolver(_pentominoes, gameProcess, this);
             SetupGame(gameProcess);
@@ -254,13 +258,14 @@ namespace Pentagon
                     {
                         var control = PentominoControls[i];
                         PentominoControls.RemoveAt(i);
-            
+
                         if (MainCanvas.Children.Contains(control))
                         {
                             MainCanvas.Children.Remove(control);
                         }
                     }
                 }
+
                 gameProcess.GameOver = true;
                 UpdateGameState();
             }
@@ -275,10 +280,17 @@ namespace Pentagon
         {
             if (GameOverMenu.Visibility == Visibility.Visible)
                 GameOverMenu.Visibility = Visibility.Hidden;
-            
+
             gameProcess.CreateNewBoard();
             SetupGame(gameProcess);
         }
+
+        public void BtnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameOverMenu.Visibility == Visibility.Visible)
+                GameOverMenu.Visibility = Visibility.Hidden;
+        }
+
         public void UpdateGameState()
         {
             if (gameProcess.GameOver)
@@ -286,5 +298,216 @@ namespace Pentagon
                 GameOverMenu.Visibility = Visibility.Visible;
             }
         }
+
+        /*private void BtnLoad_OnClick_Click(object sender, RoutedEventArgs e)
+        {
+            Board newBoard = new Board(12, 12);
+            string filePath = "solution.csv";
+
+            string[] lines = File.ReadAllLines(filePath);
+
+            if (lines.Length != 0)
+            {
+                gameProcess.Board = newBoard;
+                for (int i = 0; i < gameProcess.Board.Rows; i++)
+                {
+                    string[] values = lines[i].Split(',');
+                    for (int j = 0; j < gameProcess.Board.Columns; j++)
+                    {
+                        gameProcess.Board[i, j] = char.Parse(values[j]);
+                    }
+                }
+                List<char> listOfPlacedPentominoes = new List<char>();
+
+                for (int i = 0; i < gameProcess.Board.Rows; i++)
+                {
+                    for (int j = 0; j < gameProcess.Board.Columns; j++)
+                    {
+                        if (!listOfPlacedPentominoes.Contains(gameProcess.Board[i, j]) && gameProcess.Board[i, j] != 'O'
+                            && gameProcess.Board[i, j] != 'B')
+                        {
+                            listOfPlacedPentominoes.Add(gameProcess.Board[i, j]);
+                        }
+                    }
+                }
+                foreach (var c in listOfPlacedPentominoes)
+                {
+                    Console.WriteLine(c);
+                }
+
+                if (PentominoControls.Count != 0)
+                {
+                    if (PentominoControls.Count != 0)
+                    {
+                        for (int i = PentominoControls.Count - 1; i >= 0; i--)
+                        {
+                            var control = PentominoControls[i];
+                            PentominoControls.RemoveAt(i);
+
+                            if (MainCanvas.Children.Contains(control))
+                            {
+                                MainCanvas.Children.Remove(control);
+                            }
+                        }
+                    }
+                    for (int i = 0; i < listOfPlacedPentominoes.Count; i++)
+                    {
+                        int index = 0;
+                        var control = PentominoControls[index];
+                        switch (listOfPlacedPentominoes[i])
+                        {
+                            case 'F':
+                                index = 0;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'I':
+                                index = 1;
+                                control = PentominoControls[index];
+                                PentominoControls.Remove(control);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'L':
+                                index = 2;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'N':
+                                index = 3;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'P':
+                                index = 4;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'T':
+                                index = 5;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'U':
+                                index = 6;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'V':
+                                index = 7;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'W':
+                                index = 8;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'X':
+                                index = 9;
+                                control = PentominoControls[index-1];
+                                PentominoControls.RemoveAt(index - 1);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'Y':
+                                index = 10;
+                                control = PentominoControls[index];
+                                PentominoControls.Remove(control);
+
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'Z':
+                                index = 11;
+                                control = PentominoControls[index];
+                                PentominoControls.RemoveAt(index);
+                                if (MainCanvas.Children.Contains(control))
+                                {
+                                    MainCanvas.Children.Remove(control);
+                                }
+                                break;
+                            case 'O':
+                                break;
+                        }
+                    }
+                    DrawBoard(gameProcess.Board);
+                }
+                else
+                {
+                    MessageBox.Show("You have no saved solutions");
+                }
+            }
+        }
+
+        private void BtnSave_OnClick(object sender, RoutedEventArgs e)
+        {
+            string filePath = "solution.csv";
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                for (int i = 0; i < gameProcess.Board.Rows; i++)
+                {
+                    for (int j = 0; j < gameProcess.Board.Columns; j++)
+                    {
+                        writer.Write(gameProcess.Board[i, j]);
+
+                        if (j < gameProcess.Board.Columns - 1)
+                        {
+                            writer.Write(',');
+                        }
+                    }
+                    writer.WriteLine();
+                }
+            }
+        }*/
     }
 }
