@@ -130,6 +130,11 @@
                     <TextBlock Text = "Please wait a bit . . ."
                                FontSize="48"
                                TextAlignment="Center"/>
+                    <Button Content="Stop" 
+                            Style="{DynamicResource ButtonStyle}" 
+                            Margin="0,40,0,20"
+                            Padding="5"
+                            Click="BtnCancel_OnClick"/>
                 </StackPanel>
             </Grid>
             <Button Grid.Row="1" 
@@ -158,24 +163,6 @@
                     HorizontalAlignment="Right" VerticalAlignment="Top" 
                     Margin="0,150,20,0" Height="50" Width="160" 
                     Click="BtnAuto_Click"/>
-            <!--<Button Grid.Row="1" 
-                    Grid.Column="1" 
-                    Grid.ColumnSpan="2"
-                    Name="BtnSave" 
-                    Content="Load Solution" 
-                    Style="{DynamicResource ButtonStyle}" 
-                    HorizontalAlignment="Right" VerticalAlignment="Top" 
-                    Margin="0,210,20,0" Height="50" Width="160" 
-                    Click="BtnLoad_OnClick_Click"/>
-            <Button Grid.Row="1" 
-                    Grid.Column="1" 
-                    Grid.ColumnSpan="2"
-                    Name="BtnLoad" 
-                    Content="Save Solution" 
-                    Style="{DynamicResource ButtonStyle}" 
-                    HorizontalAlignment="Right" VerticalAlignment="Top" 
-                    Margin="0,270,20,0" Height="50" Width="160" 
-                    Click="BtnSave_OnClick"/>-->
         </Grid>
     </Canvas>
 </Window>
